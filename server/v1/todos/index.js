@@ -1,8 +1,8 @@
 var router = require('koa-router')();
 
-const BUCKETS = 'buckets';
+const TODOS = 'todos';
 
-router.prefix(`/${BUCKETS}`);
+router.prefix(`/${TODOS}`);
 
 router
     .delete('/:id', remove)
@@ -16,11 +16,11 @@ module.exports = router.routes();
 function* create(next) {
     yield next;
     
-    var ids = yield this.knex(BUCKETS)
+    var ids = yield this.knex(TODOS)
         .first()
         .insert(this.request.body);
     
-    this.body = yield this.knex(BUCKETS)
+    this.body = yield this.knex(TODOS)
         .first()
         .where('id', ids.pop());
     
@@ -30,7 +30,7 @@ function* create(next) {
 function* get(next) {
     yield next;
     
-    this.body = yield this.knex(BUCKETS)
+    this.body = yield this.knex(TODOS)
         .first()
         .where(this.params);
     
@@ -40,7 +40,7 @@ function* get(next) {
 function* query(next) {
     yield next;
     
-    this.body = yield this.knex(BUCKETS)
+    this.body = yield this.knex(TODOS)
         .select();
     
     this.status = 200;
@@ -49,7 +49,7 @@ function* query(next) {
 function* remove(next) {
     yield next;
     
-    yield this.knex(BUCKETS)
+    yield this.knex(TODOS)
         .delete()
         .where(this.params);
     
@@ -59,11 +59,11 @@ function* remove(next) {
 function* update(next) {
     yield next;
     
-    yield this.knex(BUCKETS)
+    yield this.knex(TODOS)
         .update(this.request.body)
         .where(this.params);
     
-    this.body = yield this.knex(BUCKETS)
+    this.body = yield this.knex(TODOS)
         .first()
         .where(this.params);
     

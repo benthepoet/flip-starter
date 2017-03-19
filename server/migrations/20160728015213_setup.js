@@ -1,14 +1,14 @@
 exports.up = function(knex, Promise) {
     return Promise.all([
-        knex.schema.createTable('buckets', function (table) {
+        knex.schema.createTable('todos', function (table) {
           table.increments('id').primary();
-          table.string('color');
+          table.string('body');
         })
     ]);    
 };
 
 exports.down = function(knex, Promise) {
     return Promise.all([
-        knex.schema.dropTable('buckets')
+        knex.schema.dropTable('todos')
     ]);
 };

@@ -1,17 +1,31 @@
 m = require('mithril')
-Buckets = require('./buckets')
+api = require('../api')
 
-renderBucket = (bucket) ->
-    m('li', bucket.color)
+Todos = api('todos')
+
+newTodo = {}
+
+createTodo = ->
+    Todos.create()
+
+oninit = ->
+    Todos.getList()
+
+renderTodo = (todo) ->
+    m('li', todo.body)
 
 view = ->
     m('div', [
         m('h1', 'Home')
         m('div', [
-            m('button[type=button]', { onclick: Buckets.getList }, 'Load')
+            m('form.pure-form', [
+                m('input'),
+                m('button.pure-button', { onclick: createTodo, type: 'button' }, 'Add')
+            ])
         ])
-        m('ul', Buckets.list.map(renderBucket))
+        m('ul', Todos.list.map(renderTodo))
     ])
 
 module.exports =
+    oninit: oninit
     view: view
