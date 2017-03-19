@@ -6,7 +6,7 @@
   "scripts": {
     "encrypt": "encrypt server/config.json server/config.json.cast5",
     "decrypt": "decrypt server/config.json.cast5 server/config.json",
-    "build": "watchify client/index.js -v -t browserify-css -o server/public/index.js",
+    "build": "watchify client/index.coffee -v -t coffeeify -t browserify-css --extension='.coffee' -o server/public/index.js",
     "serve": "node server",
     "dev": "npm run build | npm run serve"
   },
@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "browserify-css": "^0.10.0",
+    "coffeeify": "^2.1.0",
     "config-leaf": "^0.3.0",
     "kcors": "^1.3.2",
     "knex": "^0.12.8",
