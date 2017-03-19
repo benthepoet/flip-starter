@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "encrypt": "encrypt config.json config.json.cast5",
-    "decrypt": "decrypt config.json.cast5 config.json",
-    "serve": "watchify client/index.js -v -t browserify-css -o public/index.js"
+    "encrypt": "encrypt server/config.json server/config.json.cast5",
+    "decrypt": "decrypt server/config.json.cast5 server/config.json",
+    "build": "watchify client/index.js -v -t browserify-css -o server/public/index.js",
+    "serve": "node server",
+    "dev": "npm run build | npm run serve"
   },
   "author": "Ben Hanna <benpaulhanna@gmail.com>",
   "license": "ISC",
