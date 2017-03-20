@@ -6,13 +6,14 @@
   "scripts": {
     "encrypt": "encrypt server/config.json server/config.json.cast5",
     "decrypt": "decrypt server/config.json.cast5 server/config.json",
-    "build": "watchify client/index.coffee -v -t coffeeify -t browserify-css --extension='.coffee' -o server/public/index.js",
+    "build": "watchify client/index.coffee --extension='.coffee' -v -o client/index.bundle.js",
     "serve": "node server",
     "dev": "npm run build | npm run serve"
   },
   "author": "Ben Hanna <benpaulhanna@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "aliasify": "^2.1.0",
     "browserify-css": "^0.10.0",
     "coffeeify": "^2.1.0",
     "config-leaf": "^0.3.0",
@@ -25,6 +26,23 @@
     "mithril": "^1.0.1",
     "mysql": "^2.13.0",
     "watchify": "^3.9.0"
+  },
+  "aliasify": {
+    "replacements": {
+      "shared/(\\w+)": "./client/shared/$1/index.coffee"
+    },
+    "appliesTo": {
+      "includeExtensions": [
+        ".coffee"
+      ]
+    }
+  },
+  "browserify": {
+    "transform": [
+      "coffeeify",
+      "aliasify",
+      "browserify-css"
+    ]
   },
   "browserify-css": {
     "minify": true,

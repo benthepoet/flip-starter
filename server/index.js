@@ -8,7 +8,7 @@ app.context.knex = require('./lib/knex');
 app
     .use(cors())
     .use(parser())
-    .use(serve(__dirname + '/public'))
+    .use(serve('client'))
     .use(require('./v1'))
     .listen(8080, start);
 

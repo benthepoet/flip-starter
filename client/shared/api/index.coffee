@@ -3,6 +3,14 @@ m = require('mithril')
 module.exports = (resource) ->
     Model = 
         list: []
+        create: (data) ->
+            params =
+                data: data
+                method: 'POST'
+                url: "v1/#{resource}"
+                
+            m.request(params)
+                
         getList: ->
             params =
                 method: 'GET'
@@ -11,7 +19,7 @@ module.exports = (resource) ->
             setData = (data) ->
                 Model.list  = data
             
-            m.request params
-                .then setData
+            m.request(params)
+                .then(setData)
                 
     return Model
