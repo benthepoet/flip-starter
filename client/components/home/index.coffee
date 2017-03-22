@@ -1,22 +1,13 @@
 m = require('mithril')
 api = require('shared/api')
+swiss = require('shared/swiss')
 
 Todos = api('todos')
 
-newTodo = {}
-
-dataBind = (target, key) ->
-    m.withAttr('value', (value) ->
-        target[key] = value
-    )
-
 createTodo = ->
     Todos
-        .create(newTodo)
+        .create(Todos.draft)
         .then(Todos.getList)
-
-oninit = ->
-    Todos.getList()
 
 renderTodo = (todo) ->
     m('li', todo.body)
@@ -26,7 +17,7 @@ view = ->
         m('h1', 'Home')
         m('div', [
             m('form.pure-form', [
-                m('input', { oninput: dataBind(newTodo, 'body') }),
+                m('input', { oninput: swiss.binder(Todos.draft, 'body'), value: Todos.draft.body })
                 m('button.pure-button', { onclick: createTodo, type: 'button' }, 'Add')
             ])
         ])
@@ -34,5 +25,5 @@ view = ->
     ])
 
 module.exports =
-    oninit: oninit
+    oninit: Todos.getList
     view: view

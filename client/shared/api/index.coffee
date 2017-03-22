@@ -2,6 +2,7 @@ m = require('mithril')
 
 module.exports = (resource) ->
     Model = 
+        draft: {}
         list: []
         create: (data) ->
             params =
