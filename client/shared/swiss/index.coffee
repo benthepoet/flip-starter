@@ -1,7 +1,7 @@
 m = require('mithril')
 
-binder = (target, key) ->
+bindValue = (target, key) ->
     m.withAttr('value', (value) -> target[key] = value)
 
 module.exports = 
-    binder: binder
+    bindValue: bindValue

@@ -17,7 +17,7 @@ view = ->
         m('h1', 'Home')
         m('div', [
             m('form.pure-form', [
-                m('input', { oninput: swiss.binder(Todos.draft, 'body'), value: Todos.draft.body })
+                m('input', { oninput: swiss.bindValue(Todos.draft, 'body'), value: Todos.draft.body })
                 m('button.pure-button', { onclick: createTodo, type: 'button' }, 'Add')
             ])
         ])
