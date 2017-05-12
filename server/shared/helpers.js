@@ -1,3 +1,7 @@
+module.exports = {
+    applyQuery: applyQuery
+};
+
 function applyQuery(chain, query) {
     let mutators = {
         fields: fields,
@@ -7,9 +11,15 @@ function applyQuery(chain, query) {
         sort: sort
     };
 
-    for (let key of query) {
-        apply(query[key], key);
+    query = Object.assign({}, query);
+
+    for (let key in query) {
+        if (query.hasOwnProperty(key)) {
+            apply(query[key], key);
+        }
     }
+    
+    return chain;
 
     function apply(value, key) {
         let mutator = mutators[key] || mutators.filter;
@@ -17,14 +27,14 @@ function applyQuery(chain, query) {
         try {
             value = JSON.parse(value);
         } catch (error) {
-            throw new Error(`'${key}' is not valid JSON.`);
+            value = value.split(',');
         }
         
         mutator(value, key);
     }
     
     function fields(value, key) {
-        if (typeof value !== 'string' || !Array.isArray(value)) {
+        if (typeof value !== 'string' && !Array.isArray(value)) {
             throw new Error(`'${key}' must be a string or array.`)
         }
         
@@ -57,8 +67,20 @@ function applyQuery(chain, query) {
     }
 
     function sort(value, key) {
-        if (typeof value !== 'string' || !Array.isArray(value)) {
+        if (typeof value !== 'string' && !Array.isArray(value)) {
             throw new Error(`'${key}' must be a string or array.`)
+        }
+        
+        if (!Array.isArray(value)) {
+            value = [value];
+        }
+        
+        for (let column of value) {
+            let re = /^(-*)(\w+)$/g;
+            let groups = re.exec(column);
+            let direction = groups[1] === '-' ? 'desc' : 'asc';
+            
+            chain.orderBy(groups[2], direction); 
         }
     }
 }
